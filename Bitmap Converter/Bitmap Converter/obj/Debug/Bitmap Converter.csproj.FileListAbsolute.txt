@@ -1,0 +1,10 @@
+C:\Users\Alex\Desktop\bitmap tool\Bitmap Converter\Bitmap Converter\obj\Debug\Bitmap Converter.csprojAssemblyReference.cache
+C:\Users\Alex\Desktop\bitmap tool\Bitmap Converter\Bitmap Converter\obj\Debug\Bitmap_Converter.Form1.resources
+C:\Users\Alex\Desktop\bitmap tool\Bitmap Converter\Bitmap Converter\obj\Debug\Bitmap_Converter.Properties.Resources.resources
+C:\Users\Alex\Desktop\bitmap tool\Bitmap Converter\Bitmap Converter\obj\Debug\Bitmap Converter.csproj.GenerateResource.cache
+C:\Users\Alex\Desktop\bitmap tool\Bitmap Converter\Bitmap Converter\obj\Debug\Bitmap Converter.csproj.CoreCompileInputs.cache
+C:\Users\Alex\Desktop\bitmap tool\Bitmap Converter\Bitmap Converter\bin\Debug\Bitmap Converter.exe.config
+C:\Users\Alex\Desktop\bitmap tool\Bitmap Converter\Bitmap Converter\bin\Debug\Bitmap Converter.exe
+C:\Users\Alex\Desktop\bitmap tool\Bitmap Converter\Bitmap Converter\bin\Debug\Bitmap Converter.pdb
+C:\Users\Alex\Desktop\bitmap tool\Bitmap Converter\Bitmap Converter\obj\Debug\Bitmap Converter.exe
+C:\Users\Alex\Desktop\bitmap tool\Bitmap Converter\Bitmap Converter\obj\Debug\Bitmap Converter.pdb
