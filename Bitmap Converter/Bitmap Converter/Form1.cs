@@ -17,6 +17,11 @@ namespace Bitmap_Converter
     {
 
         bool widthEntered, heightEntered;
+        DataTable table;
+        Graphics g;
+        SolidBrush sbr;
+        Font font;
+        int xSpace = 10, ySpace = 12;
 
         public Form1()
         {
@@ -24,16 +29,15 @@ namespace Bitmap_Converter
 
             widthEntered = false;
             heightEntered = false;
-
         }
 
         public DataTable GetResultsTable(int width, int height)
         {
-           DataTable table = new DataTable();
+            table = new DataTable();
             DataColumn col;
             DataRow ro;
 
-            for(int x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
                 col = new DataColumn();
                 col.ReadOnly = true;
@@ -45,13 +49,6 @@ namespace Bitmap_Converter
                 ro = table.NewRow();
                 table.Rows.Add(ro);
             }
-
-            //for(int i = 0; i<32; i++)
-            //{
-            //    table.Columns.Add();
-            //    DataRow dr = table.NewRow();
-            //    table.Rows.Add(dr);
-            //}
 
             return table;
         }
@@ -66,6 +63,14 @@ namespace Bitmap_Converter
             {
                 generateBut.Enabled = false;
             }
+        }
+
+        public void PanelTextInit(Panel target)
+        {
+            sbr = new SolidBrush(Color.Black);
+            g = target.CreateGraphics();
+            FontFamily fam = new FontFamily("Microsoft Sans Serif");
+            font = new System.Drawing.Font(fam, 10, FontStyle.Regular);
         }
 
         private void widthTextBox_MouseClick(object sender, MouseEventArgs e)
@@ -149,6 +154,7 @@ namespace Bitmap_Converter
                         drawingPanel.Columns[i].Width = colw;
                     }
 
+                    convertBut.Enabled = true;
                 }
                 else
                 {
@@ -204,6 +210,85 @@ namespace Bitmap_Converter
                 CellStyle.BackColor = Color.White;
                 drawingPanel.Rows[e.RowIndex].Cells[e.ColumnIndex].Style = CellStyle;
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Clipboard.SetText("AYYYYYYYYYYYYYY");
+        }
+
+        private void convertBut_Click(object sender, EventArgs e)
+        {
+            PanelTextInit(binaryOutput);
+
+            binaryOutput.Refresh();
+            //Max lenght of string before new line for binary panel.
+            //string rand = "00000000 00000000 00000000 00000000 00000000 00000000 00000000";
+            //g.DrawString(rand, font, sbr, new Point(1, 1));
+            string rand = "00000000 00000000 00000000 00000000 00000000 00000000 00000000";
+            int spaceIndex = 8;
+           // extBox1.Text = DataGridView1.Rows[3].Cells[1].Value.ToString();
+            for (int row = 0; row < drawingPanel.RowCount; row++)
+            {
+                StringBuilder line = new StringBuilder();
+                xSpace = 8;
+                ySpace = 12;
+                for (int i = 0; i < drawingPanel.Columns.Count; i++)
+                {
+                    //if(i == 0)
+                    //{
+                    //    spaceIndex = 7;
+                    //}
+                    //else
+                    //{
+                        spaceIndex = 8;
+                   // }
+
+                    //String header = GridView2.Columns[i].HeaderText;
+                    //String cellText = row.Cells[i].Text;
+                    // g.DrawString(rand, font, sbr, new Point(1, row * 12));
+                    // Convert.ToString(row1.Cells[i].Value);
+
+                    if (i != 0 && i % 8 == 0)
+                    {
+                        line.Append(" ");
+                        //xSpace += 8;
+                    }
+
+                    if (drawingPanel.Rows[row].Cells[i].Style.BackColor == Color.Black)
+                    {
+                        //if (i != 0 && i % spaceIndex == 0)
+                        //{
+                        //    line.Append("1 ");
+                        //    //g.DrawString("1  ", font, sbr, new Point(i * xSpace, row * ySpace));
+                        //}
+                        //else
+                        //{
+                            line.Append("1");
+                            //g.DrawString("1", font, sbr, new Point(i * xSpace, row * ySpace));
+                       // }
+                      
+                        
+                    }
+                    else
+                    {
+                        //if (i != 0 && i % spaceIndex == 0)
+                        //{
+                        //    line.Append("0 ");
+                        //    //g.DrawString("0  ", font, sbr, new Point(i * xSpace, row * ySpace));
+                        //}
+                        //else
+                        //{
+                            line.Append("0");
+                            //g.DrawString("0", font, sbr, new Point(i * xSpace, row * ySpace));
+                      //  }
+
+                    }
+
+                    //xSpace = 8;
+                }
+                g.DrawString(line.ToString(), font, sbr, new Point(1, row * ySpace));
+            }  
         }
 
         private void heightTextBox_Leave(object sender, EventArgs e)
