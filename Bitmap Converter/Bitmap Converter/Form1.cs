@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,7 +24,8 @@ namespace Bitmap_Converter
         Graphics g;
         SolidBrush sbr;
         Font font;
-        int xSpace = 10, ySpace = 12;
+        StringBuilder line, hexLine, byteLine;
+        Bitmap bmp;
 
         public Form1()
         {
@@ -212,83 +216,140 @@ namespace Bitmap_Converter
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            System.Windows.Forms.Clipboard.SetText("AYYYYYYYYYYYYYY");
-        }
-
         private void convertBut_Click(object sender, EventArgs e)
         {
-            PanelTextInit(binaryOutput);
+            line = new StringBuilder();
+            hexLine = new StringBuilder();
+            byteLine = new StringBuilder();
+            string text_temp_byte = "";
+            int byteArrayIn = 0;
+            Byte[] bmpImg = new Byte[(drawingPanel.RowCount * drawingPanel.Columns.Count)*3];
 
-            binaryOutput.Refresh();
-            //Max lenght of string before new line for binary panel.
-            //string rand = "00000000 00000000 00000000 00000000 00000000 00000000 00000000";
-            //g.DrawString(rand, font, sbr, new Point(1, 1));
-            string rand = "00000000 00000000 00000000 00000000 00000000 00000000 00000000";
-            int spaceIndex = 8;
-           // extBox1.Text = DataGridView1.Rows[3].Cells[1].Value.ToString();
             for (int row = 0; row < drawingPanel.RowCount; row++)
             {
-                StringBuilder line = new StringBuilder();
-                xSpace = 8;
-                ySpace = 12;
                 for (int i = 0; i < drawingPanel.Columns.Count; i++)
                 {
-                    //if(i == 0)
-                    //{
-                    //    spaceIndex = 7;
-                    //}
-                    //else
-                    //{
-                        spaceIndex = 8;
-                   // }
-
-                    //String header = GridView2.Columns[i].HeaderText;
-                    //String cellText = row.Cells[i].Text;
-                    // g.DrawString(rand, font, sbr, new Point(1, row * 12));
-                    // Convert.ToString(row1.Cells[i].Value);
-
                     if (i != 0 && i % 8 == 0)
                     {
                         line.Append(" ");
-                        //xSpace += 8;
                     }
 
                     if (drawingPanel.Rows[row].Cells[i].Style.BackColor == Color.Black)
                     {
-                        //if (i != 0 && i % spaceIndex == 0)
-                        //{
-                        //    line.Append("1 ");
-                        //    //g.DrawString("1  ", font, sbr, new Point(i * xSpace, row * ySpace));
-                        //}
-                        //else
-                        //{
-                            line.Append("1");
-                            //g.DrawString("1", font, sbr, new Point(i * xSpace, row * ySpace));
-                       // }
-                      
-                        
+                        line.Append("1");
+                        text_temp_byte += "1";
+                        byteLine.Append("1");
+
+                        if(invertCB.Checked)
+                        {
+                            bmpImg[byteArrayIn] = 255;
+                            bmpImg[byteArrayIn + 1] = 255;
+                            bmpImg[byteArrayIn + 2] = 255;
+                        }
+                        else
+                        {
+                            bmpImg[byteArrayIn] = 0;
+                            bmpImg[byteArrayIn + 1] = 0;
+                            bmpImg[byteArrayIn + 2] = 0;
+                        }
+
+                        byteArrayIn+= 3;
                     }
                     else
                     {
-                        //if (i != 0 && i % spaceIndex == 0)
-                        //{
-                        //    line.Append("0 ");
-                        //    //g.DrawString("0  ", font, sbr, new Point(i * xSpace, row * ySpace));
-                        //}
-                        //else
-                        //{
-                            line.Append("0");
-                            //g.DrawString("0", font, sbr, new Point(i * xSpace, row * ySpace));
-                      //  }
+                        line.Append("0");
+                        text_temp_byte += "0";
+                        byteLine.Append("0");
 
+                        if (invertCB.Checked)
+                        {
+                            bmpImg[byteArrayIn] = 0;
+                            bmpImg[byteArrayIn + 1] = 0;
+                            bmpImg[byteArrayIn + 2] = 0;
+                        }
+                        else
+                        {
+                            bmpImg[byteArrayIn] = 255;
+                            bmpImg[byteArrayIn + 1] = 255;
+                            bmpImg[byteArrayIn + 2] = 255;
+                        }
+
+                        byteArrayIn +=3;
                     }
 
-                    //xSpace = 8;
+                    if(i % 8 == 0)
+                    {
+                        hexLine.Append("0x");
+                        hexLine.AppendFormat("{0:X2}", Convert.ToByte(text_temp_byte, 2));
+                        hexLine.Append(", ");
+
+                        text_temp_byte = "";
+                    }
+
                 }
-                g.DrawString(line.ToString(), font, sbr, new Point(1, row * ySpace));
-            }  
+                line.AppendLine();
+                hexLine.AppendLine();
+            }
+
+            binaryOutputTB.Text = line.ToString();
+            hexOutputTB.Text = hexLine.ToString();
+
+            binCTCB.Enabled = true;
+            hexCTCB.Enabled = true;
+
+            bmp = new Bitmap(drawingPanel.Columns.Count, drawingPanel.RowCount, PixelFormat.Format24bppRgb);
+
+            BitmapData bmpData = bmp.LockBits(
+                                 new Rectangle(0, 0, bmp.Width, bmp.Height),
+                                 ImageLockMode.WriteOnly, bmp.PixelFormat);
+
+            Marshal.Copy(bmpImg, 0, bmpData.Scan0, bmpImg.Length);
+
+            bmp.UnlockBits(bmpData);
+
+            bmp.Save("C:\\Users\\Alex\\Desktop\\New folder (3)\\image24.bmp");
+
+            bmpDisplay.Enabled = true;
+            bmpDisplay.Image = bmp;
+
+            saveImageBut.Enabled = true;
+        }
+
+        private void saveImageBut_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "Bitmap Image|*.bmp|JPeg Image|*.jpg";
+            saveFileDialog1.Title = "Save an Image File";
+            saveFileDialog1.ShowDialog();
+
+            if (saveFileDialog1.FileName != "")
+            {
+                System.IO.FileStream fs = (System.IO.FileStream)saveFileDialog1.OpenFile();
+
+                switch (saveFileDialog1.FilterIndex)
+                {
+                    case 1:
+                        bmp.Save(fs, System.Drawing.Imaging.ImageFormat.Bmp);
+                        break;
+
+                    case 2:
+
+                        bmp.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        break;
+                }
+
+                fs.Close();
+            }
+        }
+
+        private void hexCTCB_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Clipboard.SetText(hexOutputTB.Text);
+        }
+
+        private void binCTCB_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Clipboard.SetText(binaryOutputTB.Text);
         }
 
         private void heightTextBox_Leave(object sender, EventArgs e)
