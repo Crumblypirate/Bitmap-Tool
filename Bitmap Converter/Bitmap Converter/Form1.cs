@@ -25,7 +25,7 @@ namespace Bitmap_Converter
         SolidBrush sbr;
         Font font;
         StringBuilder line, hexLine, byteLine;
-        Bitmap bmp;
+        Bitmap bmp, uploadedBMP;
 
         public Form1()
         {
@@ -75,6 +75,68 @@ namespace Bitmap_Converter
             g = target.CreateGraphics();
             FontFamily fam = new FontFamily("Microsoft Sans Serif");
             font = new System.Drawing.Font(fam, 10, FontStyle.Regular);
+        }
+
+        public void UploadBMP()
+        {
+            line = new StringBuilder();
+            hexLine = new StringBuilder();
+            string text_temp_byte = "";
+
+            int drawingPanelX = uploadedBMP.Width;
+            int drawingPanelY = uploadedBMP.Height;
+
+            widthTextBox.ForeColor = Color.Black;
+            heightTextBox.ForeColor = Color.Black;
+            widthTextBox.Text = drawingPanelX.ToString();
+            heightTextBox.Text = drawingPanelY.ToString();
+
+            generateBut_Click(null,null);
+
+            for (int i = 0; i < uploadedBMP.Height; i++)
+            {
+                for (int j = 0; j < uploadedBMP.Width; j++)
+                {
+                    if (j != 0 && j % 8 == 0)
+                    {
+                        line.Append(" ");
+                    }
+
+                    if (uploadedBMP.GetPixel(j, i).A.ToString() == "255"
+                            && uploadedBMP.GetPixel(j, i).B.ToString() == "255"
+                            && uploadedBMP.GetPixel(j, i).G.ToString() == "255"
+                            && uploadedBMP.GetPixel(j, i).R.ToString() == "255")
+                    {
+                        drawingPanel.Rows[i].Cells[j].Style.BackColor = Color.White;
+                        text_temp_byte += "0";
+                        line.Append("0");
+                    }
+                    else
+                    {
+                        drawingPanel.Rows[i].Cells[j].Style.BackColor = Color.Black;
+                        text_temp_byte += "1";
+                        line.Append("1");
+                    }
+
+                    if (j % 8 == 0)
+                    {
+                        hexLine.Append("0x");
+                        hexLine.AppendFormat("{0:X2}", Convert.ToByte(text_temp_byte, 2));
+                        hexLine.Append(", ");
+
+                        text_temp_byte = "";
+                    }
+                }
+
+                line.AppendLine();
+                hexLine.AppendLine();
+            }
+
+            binaryOutputTB.Text = line.ToString();
+            hexOutputTB.Text = hexLine.ToString();
+
+            binCTCB.Enabled = true;
+            hexCTCB.Enabled = true;
         }
 
         private void widthTextBox_MouseClick(object sender, MouseEventArgs e)
@@ -223,7 +285,7 @@ namespace Bitmap_Converter
             byteLine = new StringBuilder();
             string text_temp_byte = "";
             int byteArrayIn = 0;
-            Byte[] bmpImg = new Byte[(drawingPanel.RowCount * drawingPanel.Columns.Count)*3];
+            Byte[] bmpImg = new Byte[(drawingPanel.RowCount * drawingPanel.Columns.Count)*4];
 
             for (int row = 0; row < drawingPanel.RowCount; row++)
             {
@@ -245,15 +307,17 @@ namespace Bitmap_Converter
                             bmpImg[byteArrayIn] = 255;
                             bmpImg[byteArrayIn + 1] = 255;
                             bmpImg[byteArrayIn + 2] = 255;
+                            bmpImg[byteArrayIn + 3] = 255;
                         }
                         else
                         {
                             bmpImg[byteArrayIn] = 0;
                             bmpImg[byteArrayIn + 1] = 0;
                             bmpImg[byteArrayIn + 2] = 0;
+                            bmpImg[byteArrayIn + 3] = 255;
                         }
 
-                        byteArrayIn+= 3;
+                        byteArrayIn+= 4;
                     }
                     else
                     {
@@ -266,15 +330,17 @@ namespace Bitmap_Converter
                             bmpImg[byteArrayIn] = 0;
                             bmpImg[byteArrayIn + 1] = 0;
                             bmpImg[byteArrayIn + 2] = 0;
+                            bmpImg[byteArrayIn + 3] = 255;
                         }
                         else
                         {
                             bmpImg[byteArrayIn] = 255;
                             bmpImg[byteArrayIn + 1] = 255;
                             bmpImg[byteArrayIn + 2] = 255;
+                            bmpImg[byteArrayIn + 3] = 255;
                         }
 
-                        byteArrayIn +=3;
+                        byteArrayIn +=4;
                     }
 
                     if(i % 8 == 0)
@@ -297,7 +363,7 @@ namespace Bitmap_Converter
             binCTCB.Enabled = true;
             hexCTCB.Enabled = true;
 
-            bmp = new Bitmap(drawingPanel.Columns.Count, drawingPanel.RowCount, PixelFormat.Format24bppRgb);
+            bmp = new Bitmap(drawingPanel.Columns.Count, drawingPanel.RowCount, PixelFormat.Format32bppArgb);
 
             BitmapData bmpData = bmp.LockBits(
                                  new Rectangle(0, 0, bmp.Width, bmp.Height),
@@ -307,7 +373,7 @@ namespace Bitmap_Converter
 
             bmp.UnlockBits(bmpData);
 
-            bmp.Save("C:\\Users\\Alex\\Desktop\\New folder (3)\\image24.bmp");
+            //bmp.Save("C:\\Users\\Alex\\Desktop\\New folder (3)\\image24.bmp");
 
             bmpDisplay.Enabled = true;
             bmpDisplay.Image = bmp;
@@ -329,16 +395,36 @@ namespace Bitmap_Converter
                 switch (saveFileDialog1.FilterIndex)
                 {
                     case 1:
-                        bmp.Save(fs, System.Drawing.Imaging.ImageFormat.Bmp);
+                        bmpDisplay.Image.Save(fs, System.Drawing.Imaging.ImageFormat.Bmp);
                         break;
 
                     case 2:
 
-                        bmp.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        bmpDisplay.Image.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg);
                         break;
                 }
 
                 fs.Close();
+            }
+        }
+
+        private void bmpUpload_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.FileName = "";
+            openFileDialog1.Title = "Images"; 
+            openFileDialog1.Filter = "All Images|*.jpg; *.bmp; *.png"; 
+                                                                       
+            openFileDialog1.ShowDialog();
+
+            if (openFileDialog1.FileName.ToString() != "") 
+            {
+                bmpDisplay.ImageLocation = openFileDialog1.FileName.ToString();
+                uploadedBMP = new Bitmap(openFileDialog1.FileName.ToString());
+
+                saveImageBut.Enabled = true;
+
+                UploadBMP();
             }
         }
 

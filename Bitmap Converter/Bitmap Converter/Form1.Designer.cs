@@ -30,6 +30,7 @@ namespace Bitmap_Converter
         {
             this.drawingPanel = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.invertCB = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.heightTextBox = new System.Windows.Forms.TextBox();
@@ -41,12 +42,12 @@ namespace Bitmap_Converter
             this.binaryOutputTB = new System.Windows.Forms.TextBox();
             this.binCTCB = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.hexOutputTB = new System.Windows.Forms.TextBox();
             this.hexCTCB = new System.Windows.Forms.Button();
+            this.hexOutputTB = new System.Windows.Forms.TextBox();
             this.bmpDisplay = new System.Windows.Forms.PictureBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.saveImageBut = new System.Windows.Forms.Button();
-            this.invertCB = new System.Windows.Forms.CheckBox();
+            this.bmpUpload = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.drawingPanel)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -74,7 +75,7 @@ namespace Bitmap_Converter
             this.drawingPanel.ShowCellToolTips = false;
             this.drawingPanel.ShowEditingIcon = false;
             this.drawingPanel.ShowRowErrors = false;
-            this.drawingPanel.Size = new System.Drawing.Size(501, 499);
+            this.drawingPanel.Size = new System.Drawing.Size(671, 499);
             this.drawingPanel.TabIndex = 0;
             this.drawingPanel.TabStop = false;
             this.drawingPanel.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.drawingPanel_CellMouseClick);
@@ -94,6 +95,16 @@ namespace Bitmap_Converter
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
+            // 
+            // invertCB
+            // 
+            this.invertCB.AutoSize = true;
+            this.invertCB.Location = new System.Drawing.Point(6, 129);
+            this.invertCB.Name = "invertCB";
+            this.invertCB.Size = new System.Drawing.Size(91, 17);
+            this.invertCB.TabIndex = 7;
+            this.invertCB.Text = "Invert Colours";
+            this.invertCB.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -163,7 +174,7 @@ namespace Bitmap_Converter
             this.groupBox2.Controls.Add(this.drawingPanel);
             this.groupBox2.Location = new System.Drawing.Point(139, 4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(522, 565);
+            this.groupBox2.Size = new System.Drawing.Size(686, 565);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Drawing Grid";
@@ -176,7 +187,7 @@ namespace Bitmap_Converter
             this.convertBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.convertBut.Location = new System.Drawing.Point(158, 524);
             this.convertBut.Name = "convertBut";
-            this.convertBut.Size = new System.Drawing.Size(172, 34);
+            this.convertBut.Size = new System.Drawing.Size(336, 34);
             this.convertBut.TabIndex = 6;
             this.convertBut.Text = "Convert";
             this.convertBut.UseVisualStyleBackColor = true;
@@ -188,9 +199,9 @@ namespace Bitmap_Converter
             | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox3.Controls.Add(this.binaryOutputTB);
             this.groupBox3.Controls.Add(this.binCTCB);
-            this.groupBox3.Location = new System.Drawing.Point(676, 4);
+            this.groupBox3.Location = new System.Drawing.Point(831, 4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(474, 565);
+            this.groupBox3.Size = new System.Drawing.Size(616, 565);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Binary Output";
@@ -205,7 +216,7 @@ namespace Bitmap_Converter
             this.binaryOutputTB.Name = "binaryOutputTB";
             this.binaryOutputTB.ReadOnly = true;
             this.binaryOutputTB.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.binaryOutputTB.Size = new System.Drawing.Size(459, 499);
+            this.binaryOutputTB.Size = new System.Drawing.Size(601, 499);
             this.binaryOutputTB.TabIndex = 0;
             // 
             // binCTCB
@@ -215,7 +226,7 @@ namespace Bitmap_Converter
             this.binCTCB.Enabled = false;
             this.binCTCB.Location = new System.Drawing.Point(161, 530);
             this.binCTCB.Name = "binCTCB";
-            this.binCTCB.Size = new System.Drawing.Size(149, 23);
+            this.binCTCB.Size = new System.Drawing.Size(291, 23);
             this.binCTCB.TabIndex = 0;
             this.binCTCB.Text = "Copy to Clipboard";
             this.binCTCB.UseVisualStyleBackColor = true;
@@ -227,25 +238,12 @@ namespace Bitmap_Converter
             | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox4.Controls.Add(this.hexCTCB);
             this.groupBox4.Controls.Add(this.hexOutputTB);
-            this.groupBox4.Location = new System.Drawing.Point(1166, 4);
+            this.groupBox4.Location = new System.Drawing.Point(1453, 4);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(474, 565);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Hex Output";
-            // 
-            // hexOutputTB
-            // 
-            this.hexOutputTB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.hexOutputTB.BackColor = System.Drawing.Color.Gainsboro;
-            this.hexOutputTB.Location = new System.Drawing.Point(9, 19);
-            this.hexOutputTB.Multiline = true;
-            this.hexOutputTB.Name = "hexOutputTB";
-            this.hexOutputTB.ReadOnly = true;
-            this.hexOutputTB.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.hexOutputTB.Size = new System.Drawing.Size(459, 499);
-            this.hexOutputTB.TabIndex = 1;
             // 
             // hexCTCB
             // 
@@ -260,27 +258,39 @@ namespace Bitmap_Converter
             this.hexCTCB.UseVisualStyleBackColor = true;
             this.hexCTCB.Click += new System.EventHandler(this.hexCTCB_Click);
             // 
+            // hexOutputTB
+            // 
+            this.hexOutputTB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.hexOutputTB.BackColor = System.Drawing.Color.Gainsboro;
+            this.hexOutputTB.Location = new System.Drawing.Point(9, 19);
+            this.hexOutputTB.Multiline = true;
+            this.hexOutputTB.Name = "hexOutputTB";
+            this.hexOutputTB.ReadOnly = true;
+            this.hexOutputTB.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.hexOutputTB.Size = new System.Drawing.Size(459, 499);
+            this.hexOutputTB.TabIndex = 1;
+            // 
             // bmpDisplay
             // 
             this.bmpDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.bmpDisplay.BackColor = System.Drawing.Color.Gainsboro;
             this.bmpDisplay.Enabled = false;
-            this.bmpDisplay.Location = new System.Drawing.Point(12, 25);
+            this.bmpDisplay.Location = new System.Drawing.Point(6, 19);
             this.bmpDisplay.Name = "bmpDisplay";
-            this.bmpDisplay.Size = new System.Drawing.Size(462, 499);
+            this.bmpDisplay.Size = new System.Drawing.Size(113, 101);
+            this.bmpDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.bmpDisplay.TabIndex = 2;
             this.bmpDisplay.TabStop = false;
             // 
             // groupBox5
             // 
-            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox5.Controls.Add(this.saveImageBut);
             this.groupBox5.Controls.Add(this.bmpDisplay);
-            this.groupBox5.Location = new System.Drawing.Point(1660, 4);
+            this.groupBox5.Location = new System.Drawing.Point(1933, 4);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(482, 565);
+            this.groupBox5.Size = new System.Drawing.Size(129, 169);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Image";
@@ -290,29 +300,31 @@ namespace Bitmap_Converter
             this.saveImageBut.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.saveImageBut.Enabled = false;
-            this.saveImageBut.Location = new System.Drawing.Point(181, 530);
+            this.saveImageBut.Location = new System.Drawing.Point(6, 126);
             this.saveImageBut.Name = "saveImageBut";
-            this.saveImageBut.Size = new System.Drawing.Size(149, 23);
+            this.saveImageBut.Size = new System.Drawing.Size(115, 28);
             this.saveImageBut.TabIndex = 2;
             this.saveImageBut.Text = "Save Image";
             this.saveImageBut.UseVisualStyleBackColor = true;
             this.saveImageBut.Click += new System.EventHandler(this.saveImageBut_Click);
             // 
-            // invertCB
+            // bmpUpload
             // 
-            this.invertCB.AutoSize = true;
-            this.invertCB.Location = new System.Drawing.Point(6, 129);
-            this.invertCB.Name = "invertCB";
-            this.invertCB.Size = new System.Drawing.Size(91, 17);
-            this.invertCB.TabIndex = 7;
-            this.invertCB.Text = "Invert Colours";
-            this.invertCB.UseVisualStyleBackColor = true;
+            this.bmpUpload.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bmpUpload.Location = new System.Drawing.Point(12, 250);
+            this.bmpUpload.Name = "bmpUpload";
+            this.bmpUpload.Size = new System.Drawing.Size(121, 38);
+            this.bmpUpload.TabIndex = 7;
+            this.bmpUpload.Text = "Upload .BMP";
+            this.bmpUpload.UseVisualStyleBackColor = true;
+            this.bmpUpload.Click += new System.EventHandler(this.bmpUpload_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2235, 574);
+            this.ClientSize = new System.Drawing.Size(2076, 574);
+            this.Controls.Add(this.bmpUpload);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -358,6 +370,7 @@ namespace Bitmap_Converter
         private System.Windows.Forms.CheckBox invertCB;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button saveImageBut;
+        private System.Windows.Forms.Button bmpUpload;
     }
 }
 
