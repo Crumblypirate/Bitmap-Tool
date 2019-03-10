@@ -42,6 +42,7 @@ namespace Bitmap_Converter
             this.binaryOutputTB = new System.Windows.Forms.TextBox();
             this.binCTCB = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.convertHexBut = new System.Windows.Forms.Button();
             this.hexCTCB = new System.Windows.Forms.Button();
             this.hexOutputTB = new System.Windows.Forms.TextBox();
             this.bmpDisplay = new System.Windows.Forms.PictureBox();
@@ -236,6 +237,7 @@ namespace Bitmap_Converter
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox4.Controls.Add(this.convertHexBut);
             this.groupBox4.Controls.Add(this.hexCTCB);
             this.groupBox4.Controls.Add(this.hexOutputTB);
             this.groupBox4.Location = new System.Drawing.Point(1453, 4);
@@ -245,12 +247,25 @@ namespace Bitmap_Converter
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Hex Output";
             // 
+            // convertHexBut
+            // 
+            this.convertHexBut.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.convertHexBut.Enabled = false;
+            this.convertHexBut.Location = new System.Drawing.Point(37, 530);
+            this.convertHexBut.Name = "convertHexBut";
+            this.convertHexBut.Size = new System.Drawing.Size(149, 23);
+            this.convertHexBut.TabIndex = 2;
+            this.convertHexBut.Text = "Convert Hex";
+            this.convertHexBut.UseVisualStyleBackColor = true;
+            this.convertHexBut.Click += new System.EventHandler(this.convertHexBut_Click);
+            // 
             // hexCTCB
             // 
             this.hexCTCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.hexCTCB.Enabled = false;
-            this.hexCTCB.Location = new System.Drawing.Point(173, 530);
+            this.hexCTCB.Location = new System.Drawing.Point(291, 530);
             this.hexCTCB.Name = "hexCTCB";
             this.hexCTCB.Size = new System.Drawing.Size(149, 23);
             this.hexCTCB.TabIndex = 1;
@@ -266,7 +281,6 @@ namespace Bitmap_Converter
             this.hexOutputTB.Location = new System.Drawing.Point(9, 19);
             this.hexOutputTB.Multiline = true;
             this.hexOutputTB.Name = "hexOutputTB";
-            this.hexOutputTB.ReadOnly = true;
             this.hexOutputTB.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.hexOutputTB.Size = new System.Drawing.Size(459, 499);
             this.hexOutputTB.TabIndex = 1;
@@ -371,6 +385,7 @@ namespace Bitmap_Converter
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button saveImageBut;
         private System.Windows.Forms.Button bmpUpload;
+        private System.Windows.Forms.Button convertHexBut;
     }
 }
 

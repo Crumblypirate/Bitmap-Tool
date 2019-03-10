@@ -62,10 +62,12 @@ namespace Bitmap_Converter
             if(widthEntered && heightEntered)
             {
                 generateBut.Enabled = true;
+                convertHexBut.Enabled = true;
             }
             else
             {
                 generateBut.Enabled = false;
+                convertHexBut.Enabled = false;
             }
         }
 
@@ -406,6 +408,89 @@ namespace Bitmap_Converter
 
                 fs.Close();
             }
+        }
+
+        private string hex2binary(string hexvalue)
+        {
+            string binaryval = "";
+            binaryval = Convert.ToString(Convert.ToInt32(hexvalue, 16), 2).PadLeft(8, '0');
+            return binaryval;
+        }
+
+        private void drawFromHex(int width)
+        {
+            string str = binaryOutputTB.Text;
+            int index = 0;
+            int hIndex = 0;
+            foreach(char c in str)
+            {
+                if(c =='1')
+                {
+                    drawingPanel.Rows[hIndex].Cells[index].Style.BackColor = Color.Black;
+                    index++;
+                }
+
+                if(c == '0')
+                {
+                    drawingPanel.Rows[hIndex].Cells[index].Style.BackColor = Color.White;
+                    index++;
+                }
+
+                if(index >= width)
+                {
+                    index = 0;
+                    hIndex++;
+                }
+            }
+        }
+
+        private void convertHexBut_Click(object sender, EventArgs e)
+        {
+            int wValue;
+            int.TryParse(heightTextBox.Text, out wValue);
+            string temp;
+            int l = 0;
+
+            string str = hexOutputTB.Text;
+
+            StringBuilder bar = new StringBuilder();
+            StringBuilder bin = new StringBuilder();
+
+            foreach (char c in str)
+            {
+                if(c != ',' && c != '\r' && c != '\n' && c != ' ')
+                {
+                    bar.Append(c);
+                }
+                
+                if(c == ',')
+                {
+                    if(bar.ToString() != (""))
+                    {
+                        if(bar.Length > 4)
+                        {
+                            bar.Remove(4, 1);
+                        }
+                        temp = hex2binary(bar.ToString());
+                        bin.Append(temp);
+                        bin.Append(" ");
+
+                        l++;
+                        if(wValue == (l*8))
+                        {
+                            bin.AppendLine();
+                            l = 0;
+                        }
+                    }
+                    bar = new StringBuilder();
+                }
+            }
+            binaryOutputTB.Text = bin.ToString();
+
+            generateBut_Click(null, null);
+
+            drawFromHex(wValue);
+
         }
 
         private void bmpUpload_Click(object sender, EventArgs e)
