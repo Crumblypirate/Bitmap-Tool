@@ -447,7 +447,7 @@ namespace Bitmap_Converter
         private void convertHexBut_Click(object sender, EventArgs e)
         {
             int wValue;
-            int.TryParse(heightTextBox.Text, out wValue);
+            int.TryParse(widthTextBox.Text, out wValue);
             string temp;
             int l = 0;
 
